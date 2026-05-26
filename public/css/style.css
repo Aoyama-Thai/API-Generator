@@ -1,0 +1,91 @@
+:root {
+  --sidebar-bg: #1e293b;
+  --sidebar-text: #e2e8f0;
+  --primary: #3b82f6;
+  --bg: #f1f5f9;
+}
+
+body {
+  background: var(--bg);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-brand {
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .nav-link {
+  color: var(--sidebar-text);
+  border-radius: 8px;
+  margin: 2px 0;
+  padding: 0.6rem 0.75rem;
+}
+
+.sidebar .nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.main-content {
+  flex: 1;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.stat-card {
+  border: none;
+  border-radius: 12px;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.login-page {
+  background: linear-gradient(135deg, #1e3a5f 0%, #3b82f6 100%);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 16px;
+}
+
+.badge.db-mssql { background: #b45309; }
+.badge.db-postgres { background: #0369a1; }
+.badge.db-db2 { background: #15803d; }
+
+.font-monospace {
+  font-family: 'Cascadia Code', 'Consolas', monospace;
+  font-size: 0.9rem;
+}
+
+code {
+  font-size: 0.85em;
+  color: #0f766e;
+}

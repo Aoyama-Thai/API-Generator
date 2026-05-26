@@ -1,0 +1,11 @@
+# API Generator
+
+ระบบจัดการ API ผ่าน Web UI — สร้างกลุ่ม API, จัดการ SQL Query, เชื่อมต่อ MS SQL Server / PostgreSQL / IBM DB2
+
+## ความสามารถ
+
+- หน้า Login และ Dashboard สถิติการใช้งาน
+- จัดการ Database Connections (MSSQL, PostgreSQL, DB2)
+- จัดการ SQL Queries พร้อมทดสอบรัน
+- จัดการ API Groups และ APIs
+- Runtime API: `/runtime/{group-prefix}/{api-path}` (โหลดจาก DB ทุก request — สร้าง/แก้ไข API แล้วใช้งานได้ทันที ไม่ต้อง restart)
