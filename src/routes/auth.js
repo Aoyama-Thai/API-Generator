@@ -6,7 +6,7 @@ const { redirectIfAuthenticated } = require('../middleware/auth');
 const router = express.Router();
 
 router.get('/login', redirectIfAuthenticated, (req, res) => {
-  res.render('login', { error: null, title: 'เข้าสู่ระบบ' });
+  res.render('login', { error: null, title: req.t('loginTitle') });
 });
 
 router.post('/login', redirectIfAuthenticated, (req, res) => {
@@ -14,7 +14,7 @@ router.post('/login', redirectIfAuthenticated, (req, res) => {
   const user = getDb().prepare('SELECT * FROM users WHERE username = ?').get(username);
 
   if (!user || !bcrypt.compareSync(password, user.password_hash)) {
-    return res.render('login', { error: 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง', title: 'เข้าสู่ระบบ' });
+    return res.render('login', { error: req.t('loginInvalid'), title: req.t('loginTitle') });
   }
 
   req.session.user = {

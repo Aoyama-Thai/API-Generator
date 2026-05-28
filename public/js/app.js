@@ -4,6 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
   bindTestQuery();
 });
 
+function isEnglish() {
+  return document.documentElement.lang === 'en';
+}
+
 function initUsageChart() {
   const canvas = document.getElementById('usageChart');
   if (!canvas || typeof Chart === 'undefined') return;
@@ -16,7 +20,7 @@ function initUsageChart() {
     data: {
       labels,
       datasets: [{
-        label: 'API Calls',
+        label: isEnglish() ? 'API Calls' : 'จำนวนการเรียก API',
         data: values,
         backgroundColor: 'rgba(59, 130, 246, 0.7)',
         borderRadius: 6,
@@ -37,9 +41,9 @@ function bindTestConnection() {
       try {
         const res = await fetch(`/connections/${btn.dataset.id}/test`, { method: 'POST' });
         const data = await res.json();
-        alert(data.message || data.error || 'ทดสอบเสร็จสิ้น');
+        alert(data.message || data.error || (isEnglish() ? 'Test completed' : 'ทดสอบเสร็จสิ้น'));
       } catch (e) {
-        alert('เกิดข้อผิดพลาด: ' + e.message);
+        alert((isEnglish() ? 'Error: ' : 'เกิดข้อผิดพลาด: ') + e.message);
       } finally {
         btn.disabled = false;
       }
@@ -50,7 +54,7 @@ function bindTestConnection() {
 function bindTestQuery() {
   document.querySelectorAll('.test-query').forEach((btn) => {
     btn.addEventListener('click', async () => {
-      const params = prompt('Parameters JSON (optional):', '{}');
+      const params = prompt(isEnglish() ? 'Parameters JSON (optional):' : 'Parameters JSON (ไม่บังคับ):', '{}');
       if (params === null) return;
       btn.disabled = true;
       try {
@@ -61,12 +65,12 @@ function bindTestQuery() {
         });
         const data = await res.json();
         if (data.success) {
-          alert('สำเร็จ! แถว: ' + (data.data?.rowCount ?? data.data?.rows?.length ?? 0));
+          alert((isEnglish() ? 'Success! Rows: ' : 'สำเร็จ! แถว: ') + (data.data?.rowCount ?? data.data?.rows?.length ?? 0));
         } else {
-          alert('ผิดพลาด: ' + data.message);
+          alert((isEnglish() ? 'Failed: ' : 'ผิดพลาด: ') + data.message);
         }
       } catch (e) {
-        alert('เกิดข้อผิดพลาด: ' + e.message);
+        alert((isEnglish() ? 'Error: ' : 'เกิดข้อผิดพลาด: ') + e.message);
       } finally {
         btn.disabled = false;
       }

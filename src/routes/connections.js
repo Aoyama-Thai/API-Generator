@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/connections', requireAuth, (req, res) => {
   res.render('connections/index', {
-    title: 'Database Connections',
+    title: req.t('databaseConnections'),
     user: req.session.user,
     connections: dbConnection.listConnections(),
     message: req.query.message,
@@ -16,7 +16,7 @@ router.get('/connections', requireAuth, (req, res) => {
 
 router.get('/connections/new', requireAuth, (req, res) => {
   res.render('connections/form', {
-    title: 'เพิ่มการเชื่อมต่อ',
+    title: req.t('add'),
     user: req.session.user,
     connection: null,
     action: '/connections',
@@ -27,7 +27,7 @@ router.get('/connections/:id/edit', requireAuth, (req, res) => {
   const connection = dbConnection.getConnectionById(req.params.id);
   if (!connection) return res.redirect('/connections?error=not_found');
   res.render('connections/form', {
-    title: 'แก้ไขการเชื่อมต่อ',
+    title: req.t('edit'),
     user: req.session.user,
     connection,
     action: `/connections/${connection.id}?_method=PUT`,

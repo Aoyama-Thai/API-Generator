@@ -1,8 +1,9 @@
 :root {
-  --sidebar-bg: #1e293b;
-  --sidebar-text: #e2e8f0;
-  --primary: #3b82f6;
-  --bg: #f1f5f9;
+  --sidebar-bg: #213C51;
+  --sidebar-text: #EEEEEE;
+  --primary: #6594B1;
+  --accent: #DDAED3;
+  --bg: #EEEEEE;
 }
 
 body {
@@ -37,7 +38,7 @@ body {
 }
 
 .sidebar .nav-link:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(221, 174, 211, 0.22);
   color: #fff;
 }
 
@@ -67,7 +68,7 @@ body {
 }
 
 .login-page {
-  background: linear-gradient(135deg, #1e3a5f 0%, #3b82f6 100%);
+  background: linear-gradient(135deg, #213C51 0%, #6594B1 100%);
 }
 
 .login-card {
@@ -87,5 +88,32 @@ body {
 
 code {
   font-size: 0.85em;
-  color: #0f766e;
+  color: #213C51;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #4f819e;
+  border-color: #4f819e;
+}
+
+.btn-success {
+  background-color: #7da8c0;
+  border-color: #7da8c0;
+}
+
+.card,
+.table,
+.modal-content {
+  border-color: rgba(33, 60, 81, 0.12);
+}
+
+.badge.bg-primary {
+  background-color: var(--accent) !important;
+  color: #213C51;
 }

@@ -19,7 +19,7 @@ function listQueries() {
 
 router.get('/sql-queries', requireAuth, (req, res) => {
   res.render('sql-queries/index', {
-    title: 'SQL Queries',
+    title: req.t('navSqlQueries'),
     user: req.session.user,
     queries: listQueries(),
     message: req.query.message,
@@ -28,7 +28,7 @@ router.get('/sql-queries', requireAuth, (req, res) => {
 
 router.get('/sql-queries/new', requireAuth, (req, res) => {
   res.render('sql-queries/form', {
-    title: 'สร้าง SQL Query',
+    title: req.t('add'),
     user: req.session.user,
     query: null,
     connections: dbConnection.listConnections(),
@@ -40,7 +40,7 @@ router.get('/sql-queries/:id/edit', requireAuth, (req, res) => {
   const query = getDb().prepare('SELECT * FROM sql_queries WHERE id = ?').get(req.params.id);
   if (!query) return res.redirect('/sql-queries?error=not_found');
   res.render('sql-queries/form', {
-    title: 'แก้ไข SQL Query',
+    title: req.t('edit'),
     user: req.session.user,
     query,
     connections: dbConnection.listConnections(),

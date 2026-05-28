@@ -5,6 +5,7 @@ const path = require('path');
 const config = require('./config');
 const { getDb, closeDb } = require('./db');
 const { mountRuntimeRoutes } = require('./routes/runtime');
+const { createTranslator, dictionaries } = require('./i18n');
 
 const authRoutes = require('./routes/auth');
 const dashboardRoutes = require('./routes/dashboard');
@@ -12,6 +13,7 @@ const connectionsRoutes = require('./routes/connections');
 const sqlQueriesRoutes = require('./routes/sqlQueries');
 const apiGroupsRoutes = require('./routes/apiGroups');
 const apisRoutes = require('./routes/apis');
+const backupRoutes = require('./routes/backup');
 
 const app = express();
 
@@ -24,6 +26,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(config.publicPath));
+app.use('/vendor/bootstrap', express.static(path.join(__dirname, '../node_modules/bootstrap/dist')));
+app.use('/vendor/bootstrap-icons', express.static(path.join(__dirname, '../node_modules/bootstrap-icons')));
+app.use('/vendor/chart.js', express.static(path.join(__dirname, '../node_modules/chart.js/dist')));
 
 app.use(
   session({
@@ -35,8 +40,18 @@ app.use(
 );
 
 app.use((req, res, next) => {
+  req.session.lang = req.session.lang || 'th';
+  req.t = createTranslator(req.session.lang);
   res.locals.user = req.session?.user || null;
+  res.locals.locale = req.session.lang;
+  res.locals.t = req.t;
   next();
+});
+
+app.get('/locale/:lang', (req, res) => {
+  const lang = req.params.lang;
+  req.session.lang = dictionaries[lang] ? lang : 'th';
+  res.redirect(req.get('referer') || '/dashboard');
 });
 
 app.get('/', (req, res) => {
@@ -49,11 +64,12 @@ app.use(connectionsRoutes);
 app.use(sqlQueriesRoutes);
 app.use(apiGroupsRoutes);
 app.use(apisRoutes);
+app.use(backupRoutes);
 
 mountRuntimeRoutes(app);
 
 app.use((req, res) => {
-  res.status(404).render('error', { title: 'ไม่พบหน้า', message: 'ไม่พบหน้าที่ต้องการ', user: req.session?.user });
+  res.status(404).render('error', { title: req.t('notFound'), message: req.t('notFoundMessage'), user: req.session?.user });
 });
 
 const server = app.listen(config.port, () => {

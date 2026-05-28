@@ -27,7 +27,7 @@ router.get('/apis', requireAuth, (req, res) => {
   }));
 
   res.render('apis/index', {
-    title: 'APIs',
+    title: req.t('navApis'),
     user: req.session.user,
     apis,
     message: req.query.message,
@@ -36,7 +36,7 @@ router.get('/apis', requireAuth, (req, res) => {
 
 router.get('/apis/new', requireAuth, (req, res) => {
   res.render('apis/form', {
-    title: 'สร้าง API',
+    title: req.t('add'),
     user: req.session.user,
     api: null,
     groups: getDb().prepare('SELECT * FROM api_groups ORDER BY name').all(),
@@ -51,7 +51,7 @@ router.get('/apis/:id/edit', requireAuth, (req, res) => {
   if (!api) return res.redirect('/apis?error=not_found');
 
   res.render('apis/form', {
-    title: 'แก้ไข API',
+    title: req.t('edit'),
     user: req.session.user,
     api,
     groups: getDb().prepare('SELECT * FROM api_groups ORDER BY name').all(),

@@ -8,6 +8,7 @@
 - จัดการ Database Connections (MSSQL, PostgreSQL, DB2)
 - จัดการ SQL Queries พร้อมทดสอบรัน
 - จัดการ API Groups และ APIs
+- สำรอง/นำเข้าข้อมูล (Connections, SQL Queries, API Groups, APIs) เป็นไฟล์ JSON
 - Runtime API: `/runtime/{group-prefix}/{api-path}` (โหลดจาก DB ทุก request — สร้าง/แก้ไข API แล้วใช้งานได้ทันที ไม่ต้อง restart)
 
 ## เริ่มต้นใช้งาน

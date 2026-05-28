@@ -16,7 +16,7 @@ router.get('/api-groups', requireAuth, (req, res) => {
     .all();
 
   res.render('api-groups/index', {
-    title: 'API Groups',
+    title: req.t('navApiGroups'),
     user: req.session.user,
     groups,
     message: req.query.message,
@@ -25,7 +25,7 @@ router.get('/api-groups', requireAuth, (req, res) => {
 
 router.get('/api-groups/new', requireAuth, (req, res) => {
   res.render('api-groups/form', {
-    title: 'สร้าง API Group',
+    title: req.t('add'),
     user: req.session.user,
     group: null,
     action: '/api-groups',
@@ -36,7 +36,7 @@ router.get('/api-groups/:id/edit', requireAuth, (req, res) => {
   const group = getDb().prepare('SELECT * FROM api_groups WHERE id = ?').get(req.params.id);
   if (!group) return res.redirect('/api-groups?error=not_found');
   res.render('api-groups/form', {
-    title: 'แก้ไข API Group',
+    title: req.t('edit'),
     user: req.session.user,
     group,
     action: `/api-groups/${group.id}?_method=PUT`,
