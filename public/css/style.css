@@ -79,6 +79,10 @@ body {
 
 .badge.db-mssql { background: #b45309; }
 .badge.db-postgres { background: #0369a1; }
+.badge.db-mysql { background: #00758f; }
+.badge.db-mariadb { background: #c0765a; }
+.badge.db-sqlite { background: #003b57; }
+.badge.db-mongodb { background: #4e944f; }
 .badge.db-db2 { background: #15803d; }
 
 .font-monospace {

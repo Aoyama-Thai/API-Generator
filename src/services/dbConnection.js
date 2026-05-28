@@ -1,5 +1,28 @@
 const { getDb } = require('../db');
 const { decrypt, encrypt } = require('./crypto');
+const { isValidDbType, defaultPort } = require('../constants/dbTypes');
+
+function normalizeConnectionInput(data) {
+  if (!isValidDbType(data.db_type)) {
+    throw new Error(`Unsupported database type: ${data.db_type}`);
+  }
+
+  const normalized = { ...data };
+
+  if (normalized.db_type === 'sqlite') {
+    normalized.host = normalized.host || 'local';
+    normalized.username = normalized.username || '';
+    normalized.port = 0;
+    normalized.password = normalized.password || '';
+  }
+
+  if (normalized.db_type === 'mongodb' && !normalized.username) {
+    normalized.username = '';
+    normalized.password = normalized.password || '';
+  }
+
+  return normalized;
+}
 
 function listConnections() {
   return getDb()
@@ -19,20 +42,21 @@ function getConnectionPassword(conn) {
 }
 
 function createConnection(data) {
+  const input = normalizeConnectionInput(data);
   const result = getDb()
     .prepare(
       `INSERT INTO db_connections (name, db_type, host, port, database_name, username, password_encrypted, options_json)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
-      data.name,
-      data.db_type,
-      data.host,
-      data.port || defaultPort(data.db_type),
-      data.database_name,
-      data.username,
-      encrypt(data.password),
-      JSON.stringify(data.options || {})
+      input.name,
+      input.db_type,
+      input.host,
+      input.port || defaultPort(input.db_type),
+      input.database_name,
+      input.username,
+      encrypt(input.password || ''),
+      JSON.stringify(input.options || {})
     );
   return result.lastInsertRowid;
 }
@@ -41,7 +65,8 @@ function updateConnection(id, data) {
   const existing = getConnectionById(id);
   if (!existing) return false;
 
-  const password = data.password ? encrypt(data.password) : existing.password_encrypted;
+  const input = normalizeConnectionInput(data);
+  const password = input.password ? encrypt(input.password) : existing.password_encrypted;
 
   getDb()
     .prepare(
@@ -49,15 +74,15 @@ function updateConnection(id, data) {
        password_encrypted=?, options_json=?, is_active=?, updated_at=datetime('now') WHERE id=?`
     )
     .run(
-      data.name,
-      data.db_type,
-      data.host,
-      data.port || defaultPort(data.db_type),
-      data.database_name,
-      data.username,
+      input.name,
+      input.db_type,
+      input.host,
+      input.port || defaultPort(input.db_type),
+      input.database_name,
+      input.username,
       password,
-      JSON.stringify(data.options || {}),
-      data.is_active !== undefined ? (data.is_active ? 1 : 0) : existing.is_active,
+      JSON.stringify(input.options || {}),
+      input.is_active !== undefined ? (input.is_active ? 1 : 0) : existing.is_active,
       id
     );
   return true;
@@ -65,11 +90,6 @@ function updateConnection(id, data) {
 
 function deleteConnection(id) {
   return getDb().prepare('DELETE FROM db_connections WHERE id = ?').run(id).changes > 0;
-}
-
-function defaultPort(dbType) {
-  const ports = { mssql: 1433, postgres: 5432, db2: 50000 };
-  return ports[dbType] || 0;
 }
 
 async function testConnection(connOrId) {
@@ -91,4 +111,5 @@ module.exports = {
   deleteConnection,
   testConnection,
   defaultPort,
+  normalizeConnectionInput,
 };

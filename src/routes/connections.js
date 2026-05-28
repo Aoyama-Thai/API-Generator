@@ -1,6 +1,7 @@
 const express = require('express');
 const dbConnection = require('../services/dbConnection');
 const { requireAuth } = require('../middleware/auth');
+const { DB_TYPES, displayLabel } = require('../constants/dbTypes');
 
 const router = express.Router();
 
@@ -20,6 +21,8 @@ router.get('/connections/new', requireAuth, (req, res) => {
     user: req.session.user,
     connection: null,
     action: '/connections',
+    dbTypes: DB_TYPES,
+    displayLabel,
   });
 });
 
@@ -31,6 +34,8 @@ router.get('/connections/:id/edit', requireAuth, (req, res) => {
     user: req.session.user,
     connection,
     action: `/connections/${connection.id}?_method=PUT`,
+    dbTypes: DB_TYPES,
+    displayLabel,
   });
 });
 

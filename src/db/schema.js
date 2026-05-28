@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS db_connections (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
-  db_type TEXT NOT NULL CHECK (db_type IN ('mssql', 'postgres', 'db2')),
+  db_type TEXT NOT NULL,
   host TEXT NOT NULL,
   port INTEGER,
   database_name TEXT NOT NULL,

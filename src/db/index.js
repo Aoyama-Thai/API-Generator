@@ -4,6 +4,7 @@ const { DatabaseSync } = require('node:sqlite');
 const bcrypt = require('bcryptjs');
 const config = require('../config');
 const { SCHEMA } = require('./schema');
+const { runMigrations } = require('./migrate');
 
 let db;
 
@@ -44,6 +45,7 @@ function getDb() {
     nativeDb.exec('PRAGMA journal_mode = WAL');
     nativeDb.exec('PRAGMA foreign_keys = ON');
     nativeDb.exec(SCHEMA);
+    runMigrations(nativeDb);
     db = wrapDatabase(nativeDb);
     seedAdminUser();
   }

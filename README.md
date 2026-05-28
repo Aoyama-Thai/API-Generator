@@ -1,11 +1,11 @@
 # API Generator
 
-ระบบจัดการ API ผ่าน Web UI — สร้างกลุ่ม API, จัดการ SQL Query, เชื่อมต่อ MS SQL Server / PostgreSQL / IBM DB2
+ระบบจัดการ API ผ่าน Web UI — สร้างกลุ่ม API, จัดการ SQL Query, เชื่อมต่อหลายประเภทฐานข้อมูล
 
 ## ความสามารถ
 
 - หน้า Login และ Dashboard สถิติการใช้งาน
-- จัดการ Database Connections (MSSQL, PostgreSQL, DB2)
+- จัดการ Database Connections (MSSQL, PostgreSQL, MySQL, MariaDB, SQLite, MongoDB, DB2)
 - จัดการ SQL Queries พร้อมทดสอบรัน
 - จัดการ API Groups และ APIs
 - สำรอง/นำเข้าข้อมูล (Connections, SQL Queries, API Groups, APIs) เป็นไฟล์ JSON
@@ -33,6 +33,28 @@ npm install ibm_db
 ```
 
 ต้องมี IBM Data Server Driver บนเครื่อง
+
+## SQLite
+
+- **Database Name** = พาธไฟล์ `.db` (เช่น `D:/data/my.db`)
+- Host/Port/Username ไม่จำเป็น (ระบบตั้งให้อัตโนมัติ)
+
+## MongoDB
+
+ใส่ Query เป็น JSON ใน SQL Queries (แทน SQL):
+
+```json
+{
+  "collection": "users",
+  "operation": "find",
+  "filter": { "status": ":status" },
+  "limit": 100
+}
+```
+
+รองรับ `operation`: `find`, `findOne`, `aggregate`, `count` — ใช้ `:paramName` ใน filter/pipeline
+
+ตัวอย่าง `options_json` ของ Connection: `{"authSource":"admin","uri":"mongodb://..."}` (ถ้ามี `uri` จะใช้แทน host/port)
 
 ## ตัวอย่าง SQL Parameter
 
