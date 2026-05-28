@@ -10,6 +10,7 @@
 - จัดการ API Groups และ APIs
 - สำรอง/นำเข้าข้อมูล (Connections, SQL Queries, API Groups, APIs) เป็นไฟล์ JSON
 - Runtime API: `/runtime/{group-prefix}/{api-path}` (โหลดจาก DB ทุก request — สร้าง/แก้ไข API แล้วใช้งานได้ทันที ไม่ต้อง restart)
+- จัดการ **CORS** สำหรับ Frontend ที่รันคนละ port (เมนู CORS ใน sidebar)
 
 ## เริ่มต้นใช้งาน
 
@@ -55,6 +56,27 @@ npm install ibm_db
 รองรับ `operation`: `find`, `findOne`, `aggregate`, `count` — ใช้ `:paramName` ใน filter/pipeline
 
 ตัวอย่าง `options_json` ของ Connection: `{"authSource":"admin","uri":"mongodb://..."}` (ถ้ามี `uri` จะใช้แทน host/port)
+
+## CORS (Frontend คนละ port)
+
+เมนู **CORS** ใน Admin UI — ตั้งค่า origin ที่อนุญาตให้เรียก `/runtime/...` จากเบราว์เซอร์
+
+ตัวอย่าง origin สำหรับ Vite/React:
+
+```
+http://localhost:5173
+http://127.0.0.1:5173
+```
+
+บันทึกแล้วมีผลทันที ไม่ต้อง restart server
+
+```javascript
+fetch('http://localhost:3001/runtime/my-group/users', {
+  credentials: 'include',
+})
+  .then((r) => r.json())
+  .then(console.log);
+```
 
 ## ตัวอย่าง SQL Parameter
 

@@ -82,6 +82,12 @@ CREATE TABLE IF NOT EXISTS api_usage_logs (
 
 CREATE INDEX IF NOT EXISTS idx_usage_created ON api_usage_logs(created_at);
 CREATE INDEX IF NOT EXISTS idx_usage_api ON api_usage_logs(api_id);
+
+CREATE TABLE IF NOT EXISTS app_settings (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL,
+  updated_at TEXT DEFAULT (datetime('now'))
+);
 `;
 
 module.exports = { SCHEMA };

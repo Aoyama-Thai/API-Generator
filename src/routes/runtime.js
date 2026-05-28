@@ -1,5 +1,6 @@
 const express = require('express');
 const apiRuntime = require('../services/apiRuntime');
+const runtimeCors = require('../middleware/runtimeCors');
 
 const router = express.Router();
 
@@ -35,6 +36,7 @@ router.all('*', async (req, res) => {
 });
 
 function mountRuntimeRoutes(app) {
+  app.use('/runtime', runtimeCors);
   app.use('/runtime', router);
   const count = apiRuntime.loadActiveApis().length;
   console.log(`Runtime API: ${count} active endpoint(s) — auto-reload on create/edit (no restart)`);

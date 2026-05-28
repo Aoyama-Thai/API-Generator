@@ -30,10 +30,26 @@ function migrateDbConnectionsTable(nativeDb) {
   `);
 }
 
+function ensureAppSettingsTable(nativeDb) {
+  const row = nativeDb
+    .prepare(`SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'app_settings'`)
+    .get();
+  if (!row) {
+    nativeDb.exec(`
+      CREATE TABLE app_settings (
+        key TEXT PRIMARY KEY,
+        value TEXT NOT NULL,
+        updated_at TEXT DEFAULT (datetime('now'))
+      );
+    `);
+  }
+}
+
 function runMigrations(nativeDb) {
   if (needsDbConnectionsMigration(nativeDb)) {
     migrateDbConnectionsTable(nativeDb);
   }
+  ensureAppSettingsTable(nativeDb);
 }
 
 module.exports = { runMigrations };

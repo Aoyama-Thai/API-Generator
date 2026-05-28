@@ -14,6 +14,7 @@ const sqlQueriesRoutes = require('./routes/sqlQueries');
 const apiGroupsRoutes = require('./routes/apiGroups');
 const apisRoutes = require('./routes/apis');
 const backupRoutes = require('./routes/backup');
+const corsRoutes = require('./routes/cors');
 
 const app = express();
 
@@ -65,6 +66,7 @@ app.use(sqlQueriesRoutes);
 app.use(apiGroupsRoutes);
 app.use(apisRoutes);
 app.use(backupRoutes);
+app.use(corsRoutes);
 
 mountRuntimeRoutes(app);
 
