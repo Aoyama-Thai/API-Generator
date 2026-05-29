@@ -1,14 +1,17 @@
 :root {
-  --sidebar-bg: #213C51;
+  --sidebar-bg: #81A6C6;
   --sidebar-text: #EEEEEE;
   --primary: #6594B1;
   --accent: #DDAED3;
   --bg: #EEEEEE;
 }
-
+@font-face {
+  font-family: Inter;
+  src: url('/../fonts/Inter/Inter-VariableFont_opsz,wght.ttf'); 
+}
 body {
   background: var(--bg);
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-family: 'Inter', '-apple-system', 'BlinkMacSystemFont', 'egoe UI', system-ui, sans-serif;
 }
 
 .app-layout {
